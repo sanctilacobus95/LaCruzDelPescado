@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>LaCruzDelPescado — Catálogo de Pescados de La Cruz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f2; --bg2:#efeeea; --surface:#ffffff; --surface2:#f3f2ee; --ink:#171918; --muted:#6e7572;
+  --line:#e3e0d9; --teal:#183f3a; --cyan:#2f6f66; --cyan-soft:#e8efec;
+  --accent:#bc4b2a; --accent-soft:#f9ece7;
+  --warn-bg:#fdf6e0; --warn-ink:#66521a; --warn-line:#e2cf8f;
+  --ok-bg:#e6f0e8; --ok-ink:#2a5d3a;
+  --chip:#efeeea; --shadow:0 8px 24px rgba(20,20,20,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#121413; --bg2:#171918; --surface:#1c1f1e; --surface2:#242726; --ink:#eceeed; --muted:#9aa3a0;
+  --line:#2e3331; --teal:#a8c8c0; --cyan:#7fb8ad; --cyan-soft:#1e2c29;
+  --accent:#e88a6a; --accent-soft:#33231e;
+  --warn-bg:#2c2716; --warn-ink:#e8d48a; --warn-line:#5a4f26; --ok-bg:#1e2f23; --ok-ink:#9ed3ab;
+  --chip:#242726; --shadow:0 8px 24px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Public Sans",system-ui,sans-serif;line-height:1.55;background:var(--bg)}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.05;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+a{color:var(--cyan)}
+button,input{font:inherit}
+button,[role="button"]{min-height:44px}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 64px}
+@media(min-width:760px){.wrap{padding:40px 28px 72px}}
+
+/* Hero — minimalista */
+.hero{padding:8px 0 20px;border-bottom:1px solid var(--line)}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.kicker::before{content:"";width:28px;height:1px;background:var(--ink);display:inline-block}
+.hero h1{font-size:clamp(2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.03em;margin-top:14px}
+.hero h1 em{font-style:normal;color:var(--cyan)}
+.lede{max-width:62ch;color:var(--muted);font-size:1rem;margin:14px 0 0}
+.hero-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.pill{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 11px;font-size:.78rem;font-weight:600;font-family:"IBM Plex Mono",monospace;color:var(--muted)}
+.pill b{color:var(--ink)}
+
+/* ——— Formato estudio de motion branding (inspirado en Strik_Studio / brands.in.motion) ——— */
+.hero{position:relative;overflow:hidden}
+.hero>*{position:relative;z-index:1}
+.hero>.hero-swim{position:absolute;z-index:0;inset:0;pointer-events:none;overflow:hidden}
+.hero-swim svg{position:absolute;left:0;color:var(--cyan)}
+.hero-swim .f1{width:110px;top:14px;opacity:.15;animation:cross 26s linear infinite}
+.hero-swim .f2{width:62px;top:66%;opacity:.10;animation:cross 38s linear infinite;animation-delay:-18s}
+.hero-swim .f3{width:84px;top:40%;opacity:.09;animation:cross 32s linear infinite reverse;animation-delay:-9s}
+@keyframes cross{from{transform:translateX(-150px) translateY(0) rotate(0deg)}25%{transform:translateX(28vw) translateY(-7px) rotate(-1.4deg)}50%{transform:translateX(55vw) translateY(5px) rotate(1.2deg)}75%{transform:translateX(82vw) translateY(-6px) rotate(-1deg)}to{transform:translateX(112vw) translateY(0) rotate(0deg)}}
+.hero h1{animation:heroUp .8s cubic-bezier(.22,1,.36,1) both}
+.hero .lede,.hero .hero-meta{animation:heroUp .8s cubic-bezier(.22,1,.36,1) .14s both}
+@keyframes heroUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.ticker{background:var(--teal);color:#f2efe8;overflow:hidden;margin:22px 0 2px;border-radius:8px}
+@media(prefers-color-scheme:dark){.ticker{background:var(--cyan);color:#0d1512}}
+.ticker-track{display:flex;width:max-content;animation:tick 38s linear infinite;padding:10px 0}
+@keyframes tick{to{transform:translateX(-50%)}}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span{font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.ticker-track b{color:var(--accent);font-weight:600;padding:0 12px}
+@media(prefers-color-scheme:dark){.ticker-track b{color:#bc4b2a}}
+.sec-num{font-family:"IBM Plex Mono",monospace;font-size:.76rem;font-weight:600;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:7px}
+.card-num{position:absolute;right:8px;bottom:8px;background:var(--ink);color:var(--bg);font-size:.68rem;font-weight:600;padding:4px 8px;border-radius:999px;letter-spacing:.08em;z-index:2}
+.detail-photo{animation:swimSoft 9s ease-in-out infinite}
+@keyframes swimSoft{0%,100%{transform:translateX(-3px) rotate(-.3deg)}50%{transform:translateX(3px) rotate(.3deg)}}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* Notices */
+.notices{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0 4px}
+@media(min-width:860px){.notices{grid-template-columns:1.3fr .9fr}}
+.notice{border-radius:8px;padding:16px 18px;border:1px solid var(--line);background:var(--surface)}
+.notice.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line)}
+.notice.info{background:var(--surface);border-color:var(--line)}
+.notice h2{font-size:1rem;margin-bottom:5px}
+.notice p{margin:0;font-size:.9rem}
+.notice.info p{color:var(--muted)}
+.notice .big{font-family:"Bricolage Grotesque";font-size:1.4rem;color:var(--ink)}
+.notice.info strong{color:var(--ink)}
+
+/* Controls */
+.controls{position:sticky;top:0;z-index:20;padding:16px 0 10px;background:var(--bg)}
+.search input{width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:13px 15px;font-size:1rem;min-height:48px}
+.search input:focus{outline:3px solid color-mix(in srgb,var(--cyan) 32%, transparent);border-color:var(--cyan)}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.fbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:.88rem;min-height:40px;transition:background .18s,color .18s,border-color .18s}
+.fbtn[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal)}
+@media(prefers-color-scheme:dark){.fbtn[aria-pressed="true"]{color:#04150f}}
+.result-count{color:var(--muted);font-size:.84rem;margin:8px 2px 0;font-family:"IBM Plex Mono",monospace}
+
+/* Grid — compacto */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media(min-width:680px){.grid{grid-template-columns:repeat(3,1fr);gap:13px}}
+@media(min-width:1080px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;text-align:left;padding:0;cursor:pointer;color:inherit;width:100%;transition:border-color .2s,box-shadow .2s;animation:rise .4s ease both;animation-delay:calc(var(--i,0)*30ms)}
+.card:hover{border-color:var(--muted);box-shadow:var(--shadow)}
+.card:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card-img{aspect-ratio:4/3;background:var(--surface2);position:relative;overflow:hidden;display:block}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;animation:swimPhoto 6.5s ease-in-out infinite;animation-delay:calc(var(--i,0)*-.8s)}
+.card:hover .card-img img{animation-play-state:paused}
+@keyframes swimPhoto{0%,100%{transform:scale(1.09) translateX(-5px) translateY(0) rotate(-.5deg)}30%{transform:scale(1.1) translateX(4px) translateY(-3px) rotate(.6deg)}55%{transform:scale(1.09) translateX(6px) translateY(2px) rotate(.3deg)}80%{transform:scale(1.1) translateX(-3px) translateY(-2px) rotate(-.6deg)}}
+.no-photo svg{animation:swimSvg 3.8s ease-in-out infinite}
+@keyframes swimSvg{0%,100%{transform:translateX(-9px) translateY(0) rotate(-2deg)}50%{transform:translateX(9px) translateY(-2px) rotate(2deg)}}
+.card-img .no-photo{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--muted);padding:12px;text-align:center}
+.no-photo svg{width:74px;height:auto;opacity:.55}
+.no-photo span{font-size:.74rem;font-weight:600}
+.badge{position:absolute;top:8px;left:8px;background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line);font-size:.68rem;font-weight:800;padding:4px 8px;border-radius:999px;font-family:"IBM Plex Mono",monospace}
+.badge.ok{background:var(--ok-bg);color:var(--ok-ink);border-color:transparent}
+.badge.new{left:auto;right:8px;background:var(--cyan);color:#fff;border-color:transparent}
+@media(prefers-color-scheme:dark){.badge.new{color:#04222b}}
+.card-body{padding:11px 12px 13px;display:flex;flex-direction:column;gap:5px;flex:1}
+.card-body h3{font-size:1.02rem;line-height:1.12}
+@media(min-width:680px){.card-body h3{font-size:1.14rem}}
+.sci{font-style:italic;color:var(--muted);font-size:.74rem;font-family:"IBM Plex Mono",monospace;line-height:1.3}
+.flesh{display:flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600}
+.swatch{width:26px;height:16px;border-radius:5px;border:1px solid rgba(0,0,0,.18);flex:none}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:5px}
+.tag{background:var(--chip);border-radius:999px;padding:4px 9px;font-size:.7rem;font-weight:700;text-transform:capitalize}
+.open-hint{font-size:.76rem;font-weight:700;color:var(--cyan)}
+.empty{display:none;background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:26px;text-align:center;color:var(--muted);margin-top:12px}
+.empty.show{display:block}
+
+/* Estado reforzado */
+.status-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+@media(min-width:860px){.status-grid{grid-template-columns:repeat(3,1fr)}}
+.status-card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.status-card h3{font-size:.95rem;margin-bottom:8px}
+.status-card ul{margin:0;padding-left:18px;color:var(--muted);font-size:.9rem}
+.status-card li+li{margin-top:6px}
+.status-card strong{color:var(--ink)}
+
+/* Sections */
+.section{margin-top:44px}
+.section h2{font-size:1.45rem;margin-bottom:7px}
+.section p{color:var(--muted);max-width:72ch;font-size:.95rem}
+.conflict-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:.9rem}
+.conflict-table th,.conflict-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.conflict-table th{background:var(--surface2);font-family:"IBM Plex Mono",monospace;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em}
+.conflict-table tr:last-child td{border-bottom:none}
+@media(max-width:640px){
+  .conflict-table thead{display:none}
+  .conflict-table tr{display:block;padding:9px 0;border-bottom:1px solid var(--line)}
+  .conflict-table td{display:block;border:none;padding:2px 12px}
+  .conflict-table td:first-child{font-weight:800}
+}
+.checklist{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px}
+@media(min-width:760px){.checklist{grid-template-columns:1fr 1fr}}
+.checklist li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 13px 11px 38px;position:relative;font-size:.9rem}
+.checklist li::before{content:"";position:absolute;left:13px;top:14px;width:14px;height:14px;border:2px solid var(--cyan);border-radius:4px}
+footer{margin-top:42px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:.85rem}
+
+/* Detail overlay */
+.overlay{position:fixed;inset:0;background:rgba(3,14,17,.66);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:880px;max-height:93vh;overflow:auto;border-radius:20px 20px 0 0;box-shadow:var(--shadow);animation:sheetUp .38s cubic-bezier(.22,1,.36,1)}
+@media(min-width:760px){.overlay{align-items:center;padding:20px}.sheet{border-radius:20px}}
+@keyframes sheetUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.sheet-head{position:sticky;top:0;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(8px);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:2;border-bottom:1px solid var(--line)}
+.sheet-head span{font-weight:600;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);font-family:"IBM Plex Mono",monospace}
+.close-btn{background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:8px 15px;font-weight:800;cursor:pointer}
+.sheet-body{padding:16px 18px 22px}
+.sheet-body h2{font-size:1.8rem}
+.detail-photo{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;margin:12px 0 4px;background:var(--surface2)}
+.photo-cap{font-size:.8rem;color:var(--muted);margin:4px 0 8px}
+.kv{display:grid;grid-template-columns:1fr;gap:9px;margin:12px 0}
+@media(min-width:640px){.kv{grid-template-columns:1fr 1fr 1fr}}
+.kv div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.kv dt{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--cyan);font-family:"IBM Plex Mono",monospace}
+.kv dd{margin:5px 0 0;font-weight:600;font-size:.94rem}
+.detail-block{margin:16px 0}
+.detail-block h3{font-size:1rem;margin-bottom:5px}
+.detail-block p{margin:0;color:var(--muted);font-size:.95rem}
+.caution{background:var(--accent-soft);border-radius:12px;padding:13px 15px}
+.caution p{color:var(--ink)}
+.link-box{background:var(--cyan-soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.link-box p{color:var(--ink)}
+.link-btn{margin-top:9px;background:var(--cyan);color:#fff;border:none;border-radius:999px;padding:9px 15px;font-weight:800;cursor:pointer}
+@media(prefers-color-scheme:dark){.link-btn{color:#04222b}}
+.fillet-box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.fillet-box svg{width:100%;height:auto;display:block}
+.fillet-btn{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:11px 18px;font-weight:800;cursor:pointer;width:100%}
+@media(min-width:560px){.fillet-btn{width:auto}}
+.fillet-legend{display:flex;flex-wrap:wrap;gap:13px;font-size:.8rem;color:var(--muted);margin-top:9px}
+.fillet-legend i{display:inline-block;width:13px;height:13px;border-radius:4px;margin-right:6px;vertical-align:-2px;border:1px solid rgba(0,0,0,.15)}
+/* Animación de fileteado por etapas */
+.diagram .whole{transition:opacity .7s ease .55s}
+.diagram .knife{transition:transform .55s cubic-bezier(.6,0,.2,1),opacity .3s;opacity:0;transform:translateX(-46px)}
+.diagram .fillet-top,.diagram .fillet-bottom{transition:transform 1.05s cubic-bezier(.22,1,.36,1) .5s}
+.diagram .fillet-label{opacity:0;transition:opacity .5s ease 1.25s}
+.diagram .bones{opacity:0;transition:opacity .6s ease .95s}
+.diagram:not(.open) .whole{animation:swim 5.5s ease-in-out infinite}
+@keyframes swim{0%,100%{transform:translateX(0) translateY(0) rotate(-1deg)}50%{transform:translateX(8px) translateY(-3px) rotate(1.2deg)}}
+.diagram.open .whole{opacity:.1}
+.diagram.open .knife{opacity:1;transform:translateX(430px)}
+.diagram.open .fillet-top{transform:translateY(-40px) rotate(-1.6deg)}
+.diagram.open .fillet-bottom{transform:translateY(40px) rotate(1.6deg)}
+.diagram.open .fillet-label{opacity:1}
+.diagram.open .bones{opacity:.9}
+.step-label{font-size:.86rem;font-weight:700;color:var(--cyan);min-height:1.3em;margin-top:8px;font-family:"IBM Plex Mono",monospace}
+@media (prefers-reduced-motion: reduce){
+  .diagram .whole,.diagram .knife,.diagram .fillet-top,.diagram .fillet-bottom,.diagram .bones,.diagram .fillet-label{transition:none;animation:none}
+  .card{animation:none;transition:none}
+  .sheet{animation:none}
+  .card-img img{transition:none}
+  .ticker-track,.hero-swim svg,.hero h1,.hero .lede,.hero .hero-meta,.card-img img,.no-photo svg,.detail-photo{animation:none}
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-swim" aria-hidden="true">
+      <svg class="f1" viewBox="0 0 120 60" fill="currentColor"><path d="M6 30 C26 10, 58 6, 84 22 L110 10 L104 30 L110 50 L84 38 C58 54, 26 50, 6 30 Z"/></svg>
+      <svg class="f2" viewBox="0 0 120 60" fill="currentColor"><path d="M6 30 C26 10, 58 6, 84 22 L110 10 L104 30 L110 50 L84 38 C58 54, 26 50, 6 30 Z"/></svg>
+      <svg class="f3" viewBox="0 0 120 60" fill="currentColor"><path d="M6 30 C26 10, 58 6, 84 22 L110 10 L104 30 L110 50 L84 38 C58 54, 26 50, 6 30 Z"/></svg>
+    </div>
+    <p class="kicker">Catálogo v2 reforzado · Lote 1 + Lote 2 · La Cruz de Huanacaxtle</p>
+    <h1>LaCruz<em>DelPescado</em></h1>
+    <p class="lede">Proyecto personal de Santiago: un catálogo de los pescados de La Cruz de Huanacaxtle. Qué pescado es, cómo se reconoce en el mercado, de qué color es su carne, cómo se prepara mejor — y con qué otros nombres se le conoce. Toca cualquier pescado para ver su ficha y cómo se separa en filetes.</p>
+    <div class="hero-meta">
+      <span class="pill"><b>23</b> fichas</span>
+      <span class="pill"><b>19</b> con foto · <b>4</b> sin foto</span>
+      <span class="pill">Bahía de Banderas, Nayarit</span>
+      <span class="pill">Actualizado · <b>20 nov 2026</b></span>
+      <span class="pill">Formato · <b>motion branding</b></span>
+    </div>
+  </header>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Huachinango<b>✳</b>Pargo<b>✳</b>Dorado · Mahi<b>✳</b>Robalo<b>✳</b>Kampachi<b>✳</b>Cabrilla<b>✳</b>Pintilla<b>✳</b>Atún<b>✳</b>Ronco<b>✳</b>Aguja<b>✳</b>Sardinas<b>✳</b>Skorpina<b>✳</b>Golden Bass<b>✳</b>Pargo Colmillón<b>✳</b>Mero<b>✳</b>Corvina<b>✳</b></span>
+      <span>Huachinango<b>✳</b>Pargo<b>✳</b>Dorado · Mahi<b>✳</b>Robalo<b>✳</b>Kampachi<b>✳</b>Cabrilla<b>✳</b>Pintilla<b>✳</b>Atún<b>✳</b>Ronco<b>✳</b>Aguja<b>✳</b>Sardinas<b>✳</b>Skorpina<b>✳</b>Golden Bass<b>✳</b>Pargo Colmillón<b>✳</b>Mero<b>✳</b>Corvina<b>✳</b></span>
+    </div>
+  </div>
+
+  <div class="notices">
+    <div class="notice warn" role="note">
+      <h2>⚠ El caos de los apodos: huachinango, pargo, cabrilla</h2>
+      <p><strong>Un apodo no es una especie.</strong> “Huachinango” y “pargo” se usan para varias especies de <em>Lutjanus</em>, y en el lote 2 la <strong>cabrilla</strong> moteada se parece muchísimo a la <strong>pintilla</strong> del lote 1: pueden ser el mismo pez con dos nombres. Este catálogo busca también por apodo, marca lo tentativo como <strong>por confirmar</strong> y vincula las fichas que podrían ser el mismo pescado, sin fusionarlas.</p>
+    </div>
+    <div class="notice info" role="note">
+      <h2>Rendimiento, sin inventar</h2>
+      <p><span class="big">35–55%</span> &nbsp;es el rango general documentado de pescado entero a filete limpio. Para <strong>pargo y mero: 40–50%</strong>. No hay rendimiento verificado por especie: se medirá en La Cruz pesando el pez entero contra el filete limpio.</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="search">
+      <input id="q" type="search" placeholder="Busca por nombre o apodo: lunarejo, mahi, chivato, escorpión, colmillón…" aria-label="Buscar pescado por nombre o apodo" autocomplete="off">
+    </div>
+    <div class="filters" role="group" aria-label="Filtrar por preparación">
+      <button class="fbtn" data-filter="all" aria-pressed="true">Todos</button>
+      <button class="fbtn" data-filter="ceviche" aria-pressed="false">Ceviche</button>
+      <button class="fbtn" data-filter="frito" aria-pressed="false">Frito</button>
+      <button class="fbtn" data-filter="zarandeado" aria-pressed="false">Zarandeado</button>
+      <button class="fbtn" data-filter="filete" aria-pressed="false">Filete</button>
+      <button class="fbtn" data-filter="sashimi" aria-pressed="false">Sashimi / crudo</button>
+    </div>
+    <p class="result-count" id="count" aria-live="polite"></p>
+  </div>
+
+  <main>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty">
+      <h3 style="font-size:1.15rem;margin-bottom:6px">Sin resultados con ese nombre</h3>
+      <p>Prueba con otro apodo: “lunarejo”, “mahi mahi”, “pez fuerte”, “chivato”, “escorpión”, “pez piedra” o “cabrilla”. Recuerda que un mismo apodo puede cubrir varias especies.</p>
+    </div>
+
+    <section class="section" aria-labelledby="estado">
+      <h2 id="estado"><span class="sec-num">01 / Archivo del proyecto</span>Estado del proyecto — reforzado · 20 nov 2026</h2>
+      <p>Archivo consolidado de LaCruzDelPescado. Lo de abajo no es relleno: es lo que ya quedó cerrado en v2, lo que sigue pendiente y cómo se cierra en la próxima visita, para no perderlo entre chats.</p>
+      <div class="status-grid">
+        <article class="status-card">
+          <h3>Ya cerrado en v2</h3>
+          <ul>
+            <li><strong>23 fichas</strong> en total: lote 1 + lote 2, con buscador por nombre y apodo.</li>
+            <li><strong>19 con foto</strong> de La Cruz y 4 sin foto, marcadas como sin foto — sin imágenes inventadas.</li>
+            <li>Cada ficha trae carne, textura, grasa, preparaciones, precauciones y <strong>animación de fileteado</strong>.</li>
+            <li><strong>Peces nadando:</strong> las fotos y siluetas del catálogo se mueven como nadando, de forma continua y desfasada tarjeta a tarjeta.</li>
+            <li><strong>Formato motion branding</strong> aplicado: marquesina de nombres en movimiento, numeración editorial de fichas y secciones, y entradas animadas al hacer scroll — inspirado en Strik_Studio / brands.in.motion.</li>
+            <li>Lo tentativo queda como <strong>“por confirmar”</strong> o “candidato”, sin fusionar fichas dudosas.</li>
+          </ul>
+        </article>
+        <article class="status-card">
+          <h3>Pendiente prioritario</h3>
+          <ul>
+            <li><strong>Cabrilla ↔ Pintilla</strong> y <strong>Skorpina ↔ Rockfish</strong>: confirmar si son el mismo pez con dos nombres.</li>
+            <li><strong>Golden Bass, serránido rosado, corvina y pargo colmillón</strong>: falta nombre del pescador y foto del cuerpo entero de lado.</li>
+            <li><strong>Fotos faltantes:</strong> atún, cirujano, mero y pez gallo.</li>
+            <li><strong>Rendimiento real:</strong> todavía no hay % por especie — se mide pesando entero vs. filete limpio.</li>
+            <li>El <strong>logo</strong> del proyecto sigue pendiente; el formato visual tipo estudio (Strik_Studio / brands.in.motion) ya quedó aplicado en esta versión.</li>
+          </ul>
+        </article>
+        <article class="status-card">
+          <h3>Protocolo · próxima visita</h3>
+          <ul>
+            <li>Anotar <strong>el nombre exacto que dijo el pescador</strong>, tal como lo dijo.</li>
+            <li>Foto del <strong>pez entero de lado, sobre hielo</strong>, sin recortes de WhatsApp.</li>
+            <li>Registrar <strong>peso entero y peso del filete limpio</strong> de la misma pieza.</li>
+            <li>Con eso se actualiza la ficha: se quita “por confirmar” solo si la evidencia lo sostiene.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="conflictos">
+      <h2 id="conflictos"><span class="sec-num">02 / Guía rápida</span>Apodos que se cruzan</h2>
+      <p>Si en el mercado escuchas uno de estos nombres, puede ser más de una especie. Esta tabla es la guía rápida para no confundir un pescado con otro.</p>
+      <table class="conflict-table">
+        <thead><tr><th>Apodo en La Cruz</th><th>Puede ser…</th><th>Riesgo</th></tr></thead>
+        <tbody>
+          <tr><td>Huachinango</td><td><em>Lutjanus peru</em> (el “verdadero”)</td><td>También se usa para <em>L. guttatus</em> y <em>L. argentiventris</em></td></tr>
+          <tr><td>Pargo</td><td>Cualquier <em>Lutjanus</em> spp.</td><td>El “pargo” de un día puede ser otra especie que el de otro día</td></tr>
+          <tr><td>Pargo flamenco / lunarejo</td><td><em>Lutjanus guttatus</em></td><td>También se vende como huachinango o pargo chivato</td></tr>
+          <tr><td>Pargo colmillón</td><td><em>Lutjanus jordani</em> (candidato fuerte)</td><td>Se confunde con el pargo prieto (<em>L. novemfasciatus</em>) en varias listas</td></tr>
+          <tr><td>Mero / cherna / cabrilla</td><td>Varios serránidos</td><td>Filetes de mero llegan a venderse como huachinango</td></tr>
+          <tr><td>Cabrilla (lote 2) ↔ Pintilla</td><td>Candidato: <em>Epinephelus analogus</em></td><td>Mismo tipo de pez moteado con dos nombres — ¿es el mismo pez? Por confirmar, no fusionar</td></tr>
+          <tr><td>Pintilla / pintillo</td><td>Un serránido moteado (candidato: <em>Epinephelus labriformis</em>)</td><td>Nombre usado para varios meros y cabrillas moteados</td></tr>
+          <tr><td>Skorpina ↔ Rockfish / Huacho</td><td><em>Scorpaena</em> spp. (misma familia)</td><td>“Skorpina” es grafía italiana de escorpión; en La Cruz se diría escorpión / pez piedra. Dos fichas que podrían ser el mismo tipo de pez</td></tr>
+          <tr><td>Barbuni</td><td>Salmonete (<em>Mullus</em> spp.) — tentativo</td><td>Nombre no estándar en México; apodo por confirmar en La Cruz</td></tr>
+          <tr><td>Golden Bass</td><td>Sin nombre científico — candidato: una corvina (Sciaenidae)</td><td>Nombre en inglés sin equivalente en México; preguntar el nombre del pescador</td></tr>
+          <tr><td>Corvina</td><td><em>Cynoscion</em> spp.</td><td>Pez plateado genérico; fácil de confundir con robalo y con el “golden bass”</td></tr>
+          <tr><td>Pez fuerte</td><td>Kampachi (<em>Seriola rivoliana</em>) en Baja California Sur</td><td>En otro puerto puede ser otro jurel</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" aria-labelledby="confirmar">
+      <h2 id="confirmar"><span class="sec-num">03 / Trabajo de campo</span>Por confirmar en el próximo viaje a La Cruz</h2>
+      <p>Las fichas marcadas “por confirmar” se cierran con estas preguntas a los pescadores de La Cruz. En cada visita conviene registrar: nombre que dijo el pescador, foto del pez entero sobre hielo, peso entero y peso del filete limpio.</p>
+      <ul class="checklist">
+        <li>Cabrilla vs. Pintilla: ¿el pez moteado de rojo-naranja es el mismo con los dos nombres, o son dos peces distintos? ¿Es <em>Epinephelus analogus</em>?</li>
+        <li>Skorpina vs. Rockfish: ¿el escorpión moteado y el pez rojo espinoso son el mismo tipo de pez? ¿En La Cruz le dicen escorpión, pez piedra o lapon?</li>
+        <li>Golden Bass: ¿qué nombre le dan los pescadores a ese pez plateado-dorado? ¿Es una corvina? ¿Cómo se distingue de la corvina sin confirmar?</li>
+        <li>Pargo colmillón: ¿el pargo gris-pardo de ojo rojo es <em>Lutjanus jordani</em>? ¿Qué talla llega? ¿Lo distinguen del pargo prieto?</li>
+        <li>Serránido rosado sin etiqueta: ¿qué pez es el rosado grande de la captura de WhatsApp? ¿Mero, cherna, cabrilla? Pedir foto del cuerpo entero de lado.</li>
+        <li>Aguja: ¿es <em>Strongylura exilis</em>? ¿La venden para ceviche o solo como carnada?</li>
+        <li>Sardinas: ¿las moteadas son crinuda (<em>Opisthonema</em>)? ¿Se venden por kilo o por caja? ¿Van como botana?</li>
+        <li>Ronco y pargos rojos del lote 2: ¿qué especie de ronco llega? ¿Y los dos pargos rojos sin etiqueta: <em>L. peru</em>, <em>L. colorado</em> u otro?</li>
+        <li>Corvina: ¿el pez plateado de la primera foto es corvina? ¿Cómo lo distinguen del robalo?</li>
+        <li>Barbuni: ¿así le dicen en La Cruz? ¿Es salmonete?</li>
+        <li>Huachinango vs. flamenco: cuando piden huachinango, ¿dan <em>L. peru</em>, <em>L. guttatus</em> o los dos?</li>
+        <li>Kampachi, cirujano, gallo y mero: ¿el kampachi es silvestre o de cultivo? ¿El cirujano se vende seguido (riesgo de ciguatera)? ¿El gallo se vende para comer? ¿Qué especie de mero llega?</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Fuentes del catálogo v2 reforzado (actualizado 20 nov 2026; base 18 nov 2026): Larousse Cocina — Diccionario de la Gastronomía Mexicana; Carta Nacional Pesquera 2023; CONABIO / SNIB; Peces Comerciales de Colima (CRIP Manzanillo); IPN / CICIMAR (escorpión roquero); FishBase y MarViva (cabrillas); guías de merma y escandallo para el rango general de rendimiento. Identificaciones por foto son tentativas hasta confirmarlas en La Cruz. Las fotos de esta página son parte de este proyecto personal; las especies sin foto de La Cruz se muestran sin imagen hasta tomarla en el mercado.</p>
+  </footer>
+</div>
+
+<!-- Detail -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="d-name">
+  <div class="sheet">
+    <div class="sheet-head"><span>Ficha del pescado · v2 reforzada</span><button class="close-btn" id="closeBtn">Cerrar ✕</button></div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<script>
+var FISH = [
+{ id:"atun", name:"Atún aleta amarilla", sci:"Thunnus albacares", family:"Scombridae", conf:"media", confLabel:"Confianza media — “atún” es genérico",
+  aliases:["atún","aleta amarilla","rabil","ahi"],
+  flesh:"Roja / rosada", fleshHex:"#c93a4b", texture:"Firme y carnosa", fat:"Magra a media",
+  preps:["sashimi","ceviche","filete"], prepsLabel:"Sashimi y sushi, ceviche, sellado a la plancha o parrilla sin sobrecocinar, filete asado",
+  recognize:"Cuerpo grande y fusiforme; aletas dorsal y anal de un amarillo intenso; carne roja brillante en crudo.",
+  caution:"Se seca rápido: no sobrecocinar. Para crudo, solo pescado muy fresco y con cadena de frío; el limón del ceviche no elimina parásitos. No confundir con aleta azul, patudo o barrilete, que también se venden como “atún”.",
+  season:"Todo el año; mayor frecuencia en mayo, agosto y diciembre según guía consultada (no es veda oficial).",
+  photo:null, photoCap:"Sin foto de La Cruz todavía — ficha armada desde la lista, no desde foto." },
+
+{ id:"barbuni", name:"Barbuni / Salmonete", sci:"Mullus spp. — por confirmar", family:"Mullidae", conf:"por", confLabel:"Por confirmar — ID tentativa por foto",
+  aliases:["barbuni","salmonete"],
+  flesh:"Blanca, rosada pálida", fleshHex:"#f2c9b8", texture:"Firme, sabor dulce e intenso", fat:"Semigrasa (~4 g / 100 g)",
+  preps:["frito","filete"], prepsLabel:"Asado o a la parrilla, frito, al horno, a la plancha con ajo y perejil",
+  recognize:"Pez pequeño y alargado, con dos barbillones bajo la boca, franja amarilla lateral y aletas amarillentas / anaranjadas. La foto muestra 4 peces con franja amarilla y cola naranja en caja de madera con hielo.",
+  caution:"“Barbuni” no es un nombre estándar en México en las fuentes consultadas: puede ser un apodo local por confirmar. Es un pez pequeño y frágil; el filete rinde poco, no prometer filetes grandes.",
+  season:"Temporada no verificada.",
+  photo:"assets/barbuni.jpg", photoAlt:"Cuatro barbuni o salmonetes sobre hielo en una caja de madera", photoCap:"Foto compartida para el proyecto: “BARBUNI #pescadeldía”. ID tentativa, por confirmar con los pescadores." },
+
+{ id:"cirujano", name:"Cirujano", sci:"Acanthurus xanthopterus (candidato)", family:"Acanthuridae", conf:"por", confLabel:"Por confirmar — hay varias especies de cirujano",
+  aliases:["cirujano","navajón"],
+  flesh:"Blanca", fleshHex:"#f6f1e6", texture:"Firme", fat:"Magra",
+  preps:["ceviche"], prepsLabel:"Ceviche / tostada de ceviche — uso documentado en Baja California Sur",
+  recognize:"Cuerpo ovalado y comprimido, colores variables, y una espina afilada como bisturí a cada lado de la base de la cola — de ahí su nombre.",
+  caution:"⚠ Riesgo documentado de ciguatera según la zona y la alimentación del pez. Marcar como ocasional y consumirlo con precaución. No confundir con el cirujano azul de acuario (la “Dory”), que no es el de consumo habitual.",
+  season:"Temporada no verificada.",
+  photo:null, photoCap:"Sin foto de La Cruz todavía — ficha armada desde la lista, no desde foto." },
+
+{ id:"corvina", name:"Corvina", sci:"Cynoscion spp.", family:"Sciaenidae", conf:"por", confLabel:"⚠ No confirmada — el pez de la foto no se puede identificar con seguridad",
+  aliases:["corvina","corvina blanca","corvina rayada"],
+  flesh:"Blanca", fleshHex:"#f7f2e4", texture:"Suave y tierna, se cocina rápido", fat:"Poca grasa",
+  preps:["ceviche","frito","filete"], prepsLabel:"Ceviche, frita, a la plancha, en salsas, filete; en Sinaloa es emblemática en el “corvinado”",
+  recognize:"Cuerpo alargado y plateado, boca grande. Sin una foto clara no se distingue con seguridad de un robalo u otro pez plateado.",
+  caution:"La foto del pez plateado sobre hielo podría ser corvina, pero también robalo, pargo plateado u otro escama. No etiquetarla como corvina definitiva hasta confirmarlo en La Cruz. Ojo: el “golden bass” del lote 2 también parece un sciénido plateado sin confirmar — son dos fotos distintas.",
+  season:"Temporada no verificada para Nayarit / Jalisco.",
+  photo:"assets/corvina-candidata.jpg", photoAlt:"Pez plateado sobre hielo, candidato a corvina sin confirmar", photoCap:"Foto compartida sin nombre de especie: pez plateado sobre hielo. Candidato a corvina — POR CONFIRMAR, no es una identificación segura.",
+  link:{ to:"golden-bass", text:"¿Es el mismo tipo de pez que el Golden Bass del lote 2? Por confirmar — ver su ficha." } },
+
+{ id:"dorado", name:"Dorado / Mahi mahi", sci:"Coryphaena hippurus", family:"Coryphaenidae", conf:"alta", confLabel:"Confianza alta — confirmada con la foto del lote 2",
+  aliases:["dorado","mahi mahi","mahi-mahi","doradilla","pez limón","lampuga"],
+  flesh:"Blanca rosada (filete limpio)", fleshHex:"#f3d9c8", texture:"Muy firme, mucho sabor", fat:"Poca grasa",
+  preps:["ceviche","frito","filete"], prepsLabel:"Ceviche fresco, horneado, asado a la parrilla, frito, a la plancha, en tacos",
+  recognize:"Vivo es azul metálico en el dorso con costados dorados y cabeza roma; al morir pierde el color y se vuelve gris verdoso. Aleta dorsal larga y cuerpo alargado. La foto del lote 2 lo muestra verde / amarillo, con la cabeza roma inconfundible.",
+  caution:"Se cocina rápido y se seca si se pasa: cocción breve, temperatura interna ideal ~63 °C. No confundir con la dorada mediterránea (Sparus aurata). En crudo el lomo se ve gris azulado; el filete limpio es blanco rosado.",
+  season:"En el Pacífico, especialmente de octubre a mayo, según Larousse Cocina.",
+  photo:"assets/dorado.jpg", photoAlt:"Dorado o mahi mahi verde y amarillo, entero, sobre una tabla blanca", photoCap:"Foto del lote 2: dorado verde / amarillo con cabeza roma sobre tabla blanca. Confirma Coryphaena hippurus con confianza alta." },
+
+{ id:"huachinango", name:"Huachinango", sci:"Lutjanus peru", family:"Lutjanidae", conf:"alta", confLabel:"Confianza alta para el grupo — ver confusión con pargo",
+  aliases:["huachinango","guachinango","pargo"],
+  flesh:"Blanca", fleshHex:"#f8f3e8", texture:"Firme y delicada, pocas espinas", fat:"Baja",
+  preps:["ceviche","zarandeado","frito","filete"], prepsLabel:"Ceviche, zarandeado, entero frito, al horno, a la veracruzana",
+  recognize:"Cuerpo rosado / rojo con aletas rojizas. Es el huachinango del Pacífico por excelencia y, junto con pargo y robalo, el preferido para zarandeado en Nayarit.",
+  caution:"⚠ Confusión central del catálogo: “huachinango” también se usa para L. guttatus (pargo flamenco / lunarejo) y L. argentiventris. Quien pide huachinango en La Cruz puede recibir cualquiera de ellos: son correctos en el mercado, pero no son la misma especie.",
+  season:"La Carta Nacional Pesquera 2023 agrupa “huachinango y pargos del Pacífico” como aprovechados en el máximo sustentable en Nayarit y Jalisco.",
+  photo:"assets/huachinango.jpg", photoAlt:"Huachinango rojo rosado entero sobre hielo", photoCap:"Foto compartida: pez rojo / rosado sobre hielo, compatible con Lutjanus spp." },
+
+{ id:"kampachi", name:"Kampachi", sci:"Seriola rivoliana", family:"Carangidae", conf:"alta", confLabel:"Confianza alta",
+  aliases:["kampachi","king kampachi","pez fuerte"],
+  flesh:"Blanca", fleshHex:"#f5ead2", texture:"Suave, mantequillosa, pero firme", fat:"Grasa buena (omega-3)",
+  preps:["sashimi","ceviche","filete","zarandeado"], prepsLabel:"Sashimi, tiradito y crudo en general, ceviche; también parrilla, horno, empapelado y zarandeado",
+  recognize:"Cuerpo robusto y plateado, lomo oscuro, cola ahorquillada. En la foto: pez oscuro y grande sobre hielo, compatible con un Seriola.",
+  caution:"Es el pescado estrella para crudo: frescura e higiene son críticas. El kampachi de cultivo de La Paz es la misma especie pero otro producto; preguntar en La Cruz si el que llega es silvestre o de cultivo, y pedir fecha de captura y manejo en hielo. Si se cocina, no pasar de término medio.",
+  season:"Temporada no verificada para el silvestre en Nayarit.",
+  photo:"assets/kampachi.jpg", photoAlt:"Kampachi oscuro y grande entero sobre hielo", photoCap:"Foto compartida: pez oscuro, grande, sobre hielo. Compatible con Seriola rivoliana." },
+
+{ id:"mero", name:"Mero", sci:"Epinephelus spp. / Mycteroperca spp. (genérico)", family:"Serranidae", conf:"media", confLabel:"Confianza media — “mero” es genérico",
+  aliases:["mero","cherna","cabrilla","guaseta"],
+  flesh:"Blanca, fina y abundante", fleshHex:"#f7f0df", texture:"Firme y jugosa; aguanta bien la cocción", fat:"Ligeramente grasosa",
+  preps:["frito","filete"], prepsLabel:"Filete, frito, empanizado, capeado, en caldos, en verde, con salsas de jitomate",
+  recognize:"Cuerpo robusto, cabeza y boca grandes; lomo café rojizo en varias especies.",
+  caution:"“Mero” cubre muchas especies de serránidos y sus filetes llegan a venderse como huachinango. Pedir siempre el nombre local del pescador y foto del pez entero. Rendimiento orientativo para mero entero: 40–50% de filete limpio (rango general, no medido por especie). El serránido rosado grande del lote 2 podría ser un mero / cherna — ver su ficha, sin asignar especie.",
+  season:"Temporada no verificada para el Pacífico de Nayarit.",
+  photo:null, photoCap:"Sin foto de La Cruz todavía — ficha armada desde la lista, no desde foto.",
+  link:{ to:"serranido-rosado", text:"El serránido rosado del lote 2 podría ser un mero / cherna. Por confirmar — ver su ficha." } },
+
+{ id:"pargo", name:"Pargo (genérico)", sci:"Lutjanus spp. (genérico)", family:"Lutjanidae", conf:"media", confLabel:"Alta para el grupo · baja para una especie concreta",
+  aliases:["pargo","huachinango"],
+  flesh:"Blanca", fleshHex:"#f8f3e8", texture:"Firme, pocas espinas", fat:"Baja",
+  preps:["zarandeado","frito","filete"], prepsLabel:"Entero al horno, asado o frito; zarandeado (el clásico de Nayarit, abierto a la mitad); filetes y postas al mojo de ajo o al ajillo; la cabeza va a caldos",
+  recognize:"Cuerpo rosado / rojo, aletas rojizas o amarillas según la especie; algunas especies tienen mancha lateral.",
+  caution:"“Pargo” es un nombre genérico para varias especies de Lutjanus (guttatus, argentiventris, colorado, peru, entre otras). Un “pargo” puede cambiar de especie de un día a otro. Rendimiento orientativo: 40–50% de filete limpio (rango general).",
+  season:"Temporada no verificada por especie.",
+  photo:"assets/pargo.jpg", photoAlt:"Pargo rojo pequeño sostenido en una mano", photoCap:"Foto compartida: pargo rojo pequeño en la mano, compatible con Lutjanus spp. joven. No se puede afirmar la especie solo por esta foto." },
+
+{ id:"flamenco", name:"Pargo flamenco / lunarejo", sci:"Lutjanus guttatus", family:"Lutjanidae", conf:"alta", confLabel:"Confianza alta — alias bien documentado",
+  aliases:["pargo flamenco","lunarejo","pargo lunarejo","huachinango","pargo chivato","pargo aleta negra","pargo de la mancha"],
+  flesh:"Blanca", fleshHex:"#f8f3e8", texture:"Firme", fat:"Baja",
+  preps:["zarandeado","frito","filete","ceviche"], prepsLabel:"Zarandeado, frito, filete, ceviche",
+  recognize:"Costados plateados y su seña inconfundible: una mancha negra entre la base de la parte blanda de la aleta dorsal y la línea lateral. Abunda frente a Nayarit y Jalisco.",
+  caution:"Es la confusión que hay que resolver primero: este pez se vende como huachinango, pargo flamenco, lunarejo y pargo chivato. La foto etiquetada “Flamenco” apunta a esta especie, no a Lutjanus peru.",
+  season:"Aprovechado en Nayarit y Jalisco dentro del grupo “huachinango y pargos del Pacífico” (Carta Nacional Pesquera 2023).",
+  photo:"assets/pargo-flamenco.jpg", photoAlt:"Pargo flamenco o lunarejo rosado con tonos amarillos sobre hielo", photoCap:"Foto compartida etiquetada “Flamenco”: compatible con Lutjanus guttatus (pargo flamenco / lunarejo)." },
+
+{ id:"gallo", name:"Pez Gallo", sci:"Nematistius pectoralis", family:"Nematistiidae", conf:"alta", confLabel:"Alta para la especie · baja como pescado de consumo",
+  aliases:["pez gallo","gallo","roosterfish"],
+  flesh:"Blanca, algo más oscura", fleshHex:"#e9dcc3", texture:"Firme y fibrosa, sabor fuerte", fat:"Media-baja",
+  preps:["filete","frito"], prepsLabel:"Filete a la plancha, al horno o frito, en rollos — con reservas (ver precaución)",
+  recognize:"Inconfundible: aleta dorsal altísima con radios largos como cresta de gallo; cuerpo plateado, con bandas oscuras en juveniles.",
+  caution:"⚠ Es un pez de pesca deportiva, no un estrella de cocina: su valor gastronómico es relativamente bajo, con sabor fuerte y toque metálico según fuentes de pesca, y se recomienda captura y liberación. No recomendarlo como pescado principal; si se come, mejor en porción pequeña de degustación.",
+  season:"Común en Sinaloa, Nayarit y Baja California Sur. Temporada no verificada.",
+  photo:null, photoCap:"Sin foto de La Cruz todavía — ficha armada desde la lista, no desde foto." },
+
+{ id:"pintilla", name:"Pintilla / Cabrilla pintilla", sci:"Epinephelus labriformis (candidato) — por confirmar", family:"Serranidae", conf:"por", confLabel:"Por confirmar — ID tentativa por foto",
+  aliases:["pintilla","pintillo","cabrilla pintilla","cabrilla pinta","guaseta pintilla"],
+  flesh:"Blanca", fleshHex:"#f7f0df", texture:"Firme", fat:"Baja a media",
+  preps:["ceviche","frito","filete"], prepsLabel:"Por familia (cabrilla / mero): caldo, ceviche, empanizado, frito — recomendación por familia, no receta verificada para la “pintilla” de La Cruz",
+  recognize:"Cuerpo marrón / gris cubierto de manchas rojizas y naranjas densas, boca grande. La foto muestra exactamente eso: un pez grande moteado en caja de madera con hielo.",
+  caution:"No hay una fuente que ligue sin duda el apodo “pintilla” de La Cruz a E. labriformis sin ver el pez en persona. “Pintilla / pintillo” se usa para varios serránidos moteados. Confirmar la especie con el pescador. Ojo: la cabrilla del lote 2 muestra el mismo tipo de pez moteado — podrían ser la misma especie con dos nombres.",
+  season:"Temporada no verificada.",
+  photo:"assets/pintilla.jpg", photoAlt:"Pintilla o cabrilla moteada marrón con puntos naranjas sobre hielo en caja de madera", photoCap:"Foto compartida: pez marrón moteado en caja de madera con hielo. Compatible con un serránido moteado — ID tentativa, por confirmar.",
+  link:{ to:"cabrilla", text:"¿Es el mismo pez que la Cabrilla del lote 2? Por confirmar — no fusionar. Ver su ficha." } },
+
+{ id:"robalo", name:"Robalo", sci:"Centropomus spp.", family:"Centropomidae", conf:"alta", confLabel:"Confianza alta",
+  aliases:["robalo","róbalo","chucumite (el joven)"],
+  flesh:"Blanca, fina", fleshHex:"#faf6ec", texture:"Suave y jugosa — “el más fino de los pescados”, según Larousse", fat:"Baja",
+  preps:["ceviche","frito","filete","zarandeado"], prepsLabel:"Postas fritas o asadas, al mojo de ajo, filete en cualquier salsa o empanizado, ceviche, caldo de robalo; también es clásico del zarandeado nayarita",
+  recognize:"Cuerpo alargado y plateado con la seña clave: una línea lateral negra que corre por todo el cuerpo. Vive en costa y esteros, y puede entrar a agua dulce.",
+  caution:"Pescado caro y muy demandado. En el Pacífico pueden ser varias especies de Centropomus (viridis, nigrescens, armatus, medius).",
+  season:"Temporada no verificada para el Pacífico de Nayarit.",
+  photo:"assets/robalo.jpg", photoAlt:"Robalo plateado con línea lateral negra sobre hielo", photoCap:"Foto compartida: pez plateado con línea lateral negra visible, sobre hielo. Compatible con Centropomus spp." },
+
+{ id:"rockfish", name:"Rockfish / Huacho", sci:"Sebastes spp. o Scorpaena spp. — por confirmar", family:"Sebastidae / Scorpaenidae", conf:"por", confLabel:"Por confirmar — confianza baja, “rockfish” cubre +100 especies",
+  aliases:["rockfish","huacho","pez de roca","rocote"],
+  flesh:"Blanca", fleshHex:"#f7f1e2", texture:"Firme pero tierna, dulce y delicada", fat:"Baja",
+  preps:["filete"], prepsLabel:"Entero a la parrilla abierto en mariposa, al horno con hierbas, a la plancha, filete con piel crujiente",
+  recognize:"La foto muestra un pez rojo, espinoso, de cabeza grande y boca ancha sobre hielo — rasgos de un pez de roca / rascacio, pero no de una especie concreta.",
+  caution:"⚠ Espinas dorsales punzantes, en muchos casos venenosas: manipular con guantes o pinzas, nunca agarrar por el lomo. No recomendar en ceviche crudo sin precaución (riesgo de parásitos). “Huacho” es un nombre peruano, no confirmado como nombre estándar en Nayarit. No es huachinango, aunque a veces se vende con nombres parecidos. La skorpina del lote 2 es de la misma familia — podrían ser el mismo tipo de pez.",
+  season:"Temporada no verificada.",
+  photo:"assets/rockfish.jpg", photoAlt:"Rockfish o pez de roca rojo y espinoso sobre hielo", photoCap:"Foto compartida: pez rojo espinoso sobre hielo. ID tentativa — especie y nombre local por confirmar en La Cruz.",
+  link:{ to:"skorpina", text:"¿Es el mismo tipo de pez que la Skorpina del lote 2? Misma familia (Scorpaenidae). Por confirmar — ver su ficha." } },
+
+/* ===== LOTE 2 (v2) ===== */
+{ id:"aguja", name:"Aguja / Agujón", sci:"Strongylura exilis (candidato)", family:"Belonidae", conf:"por", confLabel:"Candidato — género seguro, especie por confirmar", nuevo:true,
+  aliases:["aguja","agujón","pez aguja","sierrita"],
+  flesh:"Blanca, fina", fleshHex:"#f6f1e6", texture:"Firme; filetes largos y delgados, muchas espinas finas", fat:"Magra",
+  preps:["ceviche","frito","filete"], prepsLabel:"Ceviche en cubos pequeños (uso documentado en Colima: “largos filetes para cebiche”), frita, a la plancha",
+  recognize:"Inconfundible: cuerpo larguísimo y delgado, lomo verde-azulado, vientre plateado y mandíbulas en pico largo con dientes pequeños. La foto lo muestra clarísimo sobre hielo.",
+  caution:"Es un pescado de 3ª clase comercial (valor bajo en el mercado) y también se usa mucho como carnada: no prometer filetes gruesos sin espinas. En el Pacífico el candidato es Strongylura; Tylosurus es del Golfo. Frescura obligatoria para ceviche.",
+  season:"Temporada no verificada.",
+  photo:"assets/aguja.jpg", photoAlt:"Aguja o agujón de pico largo con dientes, sobre hielo en caja de madera", photoCap:"Foto del lote 2: “AGUJA #pescadeldía”. Compatible con Strongylura exilis — especie por confirmar (hay varias Strongylura en el Pacífico)." },
+
+{ id:"skorpina", name:"Skorpina / Escorpión roquero", sci:"Scorpaena mystes (candidato fuerte)", family:"Scorpaenidae", conf:"cand", confLabel:"Candidato fuerte — hay varias Scorpaena en el Pacífico", nuevo:true,
+  aliases:["skorpina","escorpión roquero","escorpión","pez piedra","lapon","peje piedra"],
+  flesh:"Blanca, de calidad excelente", fleshHex:"#f7f1e2", texture:"Firme, carne muy apreciada", fat:"Baja a media",
+  preps:["frito","filete"], prepsLabel:"Caldo / sopa de pescado (uso clásico de los escorpénidos), entero al horno, a la plancha, frito; tempura",
+  recognize:"Cabeza enorme, cuerpo moteado pardo-rojizo con aspecto de roca y aletas pectorales grandes y rojizas. La foto muestra exactamente eso. Presente en Bahía Chamela, Jalisco, y Punta Carrizales, Colima — la zona de La Cruz.",
+  caution:"⚠ ESPINAS DORSALES VENENOSAS: el veneno sigue activo mucho después de la muerte; la picadura causa dolor fuerte, hinchazón y puede dar fiebre. Manipular con guantes / pinzas, nunca agarrar por el lomo. NO va en ceviche ni crudo sin precaución (y congelación previa). “Skorpina” es una grafía no estándar en México — en La Cruz se diría escorpión / pez piedra. La cabeza es muy grande: el rendimiento de filete será bajo.",
+  season:"Temporada no verificada.",
+  photo:"assets/skorpina.jpg", photoAlt:"Skorpina o escorpión roquero moteado pardo rojizo con aletas rojas, sobre hielo", photoCap:"Foto del lote 2: “SKORPINA #pescadeldía”. Compatible con Scorpaena mystes — candidato fuerte, no definitivo.",
+  link:{ to:"rockfish", text:"¿Es el mismo tipo de pez que el Rockfish / Huacho? Misma familia (Scorpaenidae). Por confirmar — ver su ficha." } },
+
+{ id:"cabrilla", name:"Cabrilla (lote 2)", sci:"Epinephelus analogus (candidato) — por confirmar", family:"Serranidae", conf:"por", confLabel:"Por confirmar — candidato principal E. analogus; segundo candidato E. labriformis", nuevo:true,
+  aliases:["cabrilla","cabrilla pintada","cabrilla pinta","cabrilla moteada"],
+  flesh:"Blanca (por familia)", fleshHex:"#f7f0df", texture:"Firme (por familia Serranidae)", fat:"Baja a media",
+  preps:["ceviche","frito","filete"], prepsLabel:"Por familia cabrilla / mero: caldo, ceviche, empanizado, frito, horno — recomendación por familia, no receta verificada para La Cruz",
+  recognize:"Cuerpo pardo con puntos rojo-naranja densos, boca grande y aleta dorsal con manchas. Dato clave: E. labriformis tiene manchas blancas y una mancha negra en la base de la cola; esta foto muestra puntos rojo-naranja, por lo que E. analogus (cabrilla pintada, hasta 114 cm) encaja mejor. La foto NO es un Paralabrax (ese es rayado, no moteado).",
+  caution:"⚠ La foto de esta cabrilla y la de la pintilla (lote 1) muestran el mismo tipo de pez moteado en caja de madera con hielo: es muy probable que sean la misma especie con dos nombres distintos, pero NO se fusionan las fichas hasta que un pescador lo confirme con el pez en la mano. Si resulta E. labriformis, es hermafrodita protógino y vulnerable en primavera-verano: no pescar ejemplares pequeños.",
+  season:"Temporada no verificada.",
+  photo:"assets/cabrilla.jpg", photoAlt:"Cabrilla parda con puntos rojo naranja densos, sobre hielo en caja de madera", photoCap:"Foto del lote 2: “CABRILLA #pescadeldía”. Mismo tipo de pez que la pintilla del lote 1 — ID tentativa, por confirmar, sin fusionar.",
+  link:{ to:"pintilla", text:"¿Es el mismo pez que la Pintilla? Por confirmar — no fusionar. Ver su ficha." } },
+
+{ id:"golden-bass", name:"Golden Bass", sci:"Por confirmar — sin nombre científico", family:"Sciaenidae (candidata, por confirmar)", conf:"por", confLabel:"⚠ Especie por confirmar — no asignar nombre científico", nuevo:true,
+  aliases:["golden bass"],
+  flesh:"Blanca (por familia, no verificado)", fleshHex:"#f7f2e4", texture:"Suave (por familia, no verificado)", fat:"Por confirmar",
+  preps:["frito","filete","ceviche"], prepsLabel:"Solo orientativo, por familia corvina: frito, a la plancha, ceviche, horno — no dar por seguras estas preparaciones hasta confirmar la especie",
+  recognize:"Pez plateado-dorado: lomo bronce / dorado, vientre plateado, aletas anaranjadas / rojizas, cabeza roma y boca pequeña. Por forma y color podría ser un sciénido (corvina), pero sin ver la boca, la dorsal y la línea lateral no se puede afirmar ni el género.",
+  caution:"“Golden bass” no aparece como nombre estándar de ningún pez en México en las fuentes consultadas: parece un nombre en inglés o una traducción libre, no un nombre local. Hay que preguntar en La Cruz qué nombre le dan los pescadores. No confundir con la corvina sin confirmar del lote 1: son dos peces plateados distintos, con dos fotos distintas.",
+  season:"Temporada no verificada.",
+  photo:"assets/golden-bass.jpg", photoAlt:"Golden bass plateado dorado con aletas anaranjadas, sobre hielo en caja de madera", photoCap:"Foto del lote 2: “GOLDEN BASS #pescadeldía”. Sin identificar — candidato Sciaenidae, especie por confirmar.",
+  link:{ to:"corvina", text:"¿Es el mismo tipo de pez que la Corvina sin confirmar? Ambos parecen sciénidos plateados. Por confirmar — ver su ficha." } },
+
+{ id:"sardinas", name:"Sardinas", sci:"Opisthonema spp. (crinuda, candidata)", family:"Clupeidae", conf:"media", confLabel:"Confianza media para el grupo · baja para la especie", nuevo:true,
+  aliases:["sardinas","sardina","sardina crinuda","sardina crinuda azul","sardina piña","boquerón"],
+  flesh:"Azul, grasa", fleshHex:"#7d94a8", texture:"Grasa y sabrosa, muchas espinas pequeñas", fat:"Alta (pescado azul)",
+  preps:["frito","ceviche"], prepsLabel:"Fritas o asadas en salsa de jitomate, en escabeche, en ceviche, en tortitas; la mayor parte de la pesca se enlata",
+  recognize:"Peces pequeños y plateados, de lomo azul oscuro / verdoso, en cardumen. La seña de la foto: puntos oscuros a lo largo del costado — rasgo de la sardina crinuda (Opisthonema spp.); Sardinops sagax no tiene esos puntos.",
+  caution:"Muchas espinas: no es un pescado de filete, se come entero (sin cabeza, desescamada y vaciada). Funciona mejor como botana / tapa / entrada que como plato principal. “Sardina” es genérico: cubre varias especies en México.",
+  season:"Primavera y verano; en julio-agosto su carne es grasosa y de buen sabor (Larousse).",
+  photo:"assets/sardinas.jpg", photoAlt:"Cardumen de sardinas plateadas con puntos oscuros en el costado, sobre hielo en caja de madera", photoCap:"Foto del lote 2: “SARDINAS #pescadeldía”. Compatible con Opisthonema spp. (crinuda) por los puntos del costado — especie por confirmar." },
+
+{ id:"pargos-lote2", name:"Pargos rojos (lote 2, sin etiqueta)", sci:"Lutjanus spp. — por confirmar especie", family:"Lutjanidae", conf:"por", confLabel:"Alta para el grupo · especie por confirmar", nuevo:true,
+  aliases:["pargo","huachinango","pargo rojo"],
+  flesh:"Blanca", fleshHex:"#f8f3e8", texture:"Firme, pocas espinas", fat:"Baja",
+  preps:["zarandeado","frito","filete","ceviche"], prepsLabel:"Como el pargo / huachinango: zarandeado, entero al horno / asado / frito, filete, postas, mojo de ajo; la cabeza, en caldos",
+  recognize:"Dos peces rojos / rosados sobre hielo, con aletas rojizas. Sin mancha negra visible ni detalle del hocico o la aleta, no se puede distinguir L. peru de L. colorado o L. argentiventris solo con esta foto.",
+  caution:"Foto sin etiqueta: queda como Lutjanus spp. por confirmar. No asignarle la ficha del huachinango ni la del flamenco sin el detalle que los distingue (mancha negra del lunarejo). Rendimiento orientativo: 40–50% de filete limpio (rango general pargo / mero).",
+  season:"Temporada no verificada por especie.",
+  photo:"assets/pargos-rojos-lote2.jpg", photoAlt:"Dos pargos rojos rosados sobre hielo, sin etiqueta", photoCap:"Foto del lote 2, sin etiqueta en la imagen: dos pargos rojos sobre hielo. Lutjanus spp. — especie por confirmar." },
+
+{ id:"serranido-rosado", name:"Serránido rosado grande (sin etiqueta)", sci:"Familia Serranidae — especie por confirmar", family:"Serranidae", conf:"por", confLabel:"⚠ Por confirmar — no asignar especie (no poner Epinephelus ni Mycteroperca concreto)", nuevo:true,
+  aliases:["mero","cherna","cabrilla"],
+  flesh:"Blanca (por familia)", fleshHex:"#f7f0df", texture:"Firme (por familia)", fat:"Por confirmar",
+  preps:["filete","frito"], prepsLabel:"Solo orientativo, por familia mero: filete, frito, empanizado, caldo, horno",
+  recognize:"Pez grande y rosado, de cabeza muy grande, labios gruesos, ojo grande y aleta pectoral rojiza: por cuerpo y cabeza es un serránido (mero / cabrilla / cherna). La foto es una captura de WhatsApp recortada, sin el cuerpo entero de lado, y no permite distinguir la especie.",
+  caution:"No identificarlo con nombre de especie hasta confirmar. Pedir foto del pez entero de lado y el nombre que le da el pescador en La Cruz.",
+  season:"Temporada no verificada.",
+  photo:"assets/serranido-rosado.jpg", photoAlt:"Serránido rosado grande de cabeza grande y labios gruesos, en caja de madera con hielo", photoCap:"Foto del lote 2: captura de WhatsApp (15:06), sin etiqueta. Serránido rosado grande — especie por confirmar, no asignar.",
+  link:{ to:"mero", text:"Podría ser un mero / cherna de la ficha genérica. Por confirmar — ver su ficha." } },
+
+{ id:"ronco", name:"Ronco", sci:"Haemulon spp. — por confirmar especie", family:"Haemulidae", conf:"media", confLabel:"Confianza media para el género · baja para la especie", nuevo:true,
+  aliases:["ronco","corocoro","roncador","boquilla"],
+  flesh:"Blanca, sabrosa", fleshHex:"#f7f1e2", texture:"Firme, pocas espinas", fat:"Baja a media",
+  preps:["frito","filete"], prepsLabel:"Frito (uso clásico del corocoro), asado, horneado; ceviche solo con pescado muy fresco — no es su uso documentado principal",
+  recognize:"Cuerpo plateado, cabeza roma y boca pequeña, sin rayas marcadas en la foto. Varias especies del Pacífico (H. maculicauda, H. steindachneri, entre otras) se parecen mucho en foto y no se distinguen sin ver rayas, manchas y la forma de la aleta.",
+  caution:"No confundir con la corvina (Sciaenidae): también “ronca” por su vejiga natatoria, pero es otra familia. Es un pescado de valor medio, no premium.",
+  season:"Temporada no verificada.",
+  photo:"assets/ronco.jpg", photoAlt:"Ronco plateado de cabeza roma y ojo grande, sobre hielo en caja de madera", photoCap:"Foto del lote 2: “RONCO #pescadeldía”. Compatible con Haemulon spp. — especie por confirmar." },
+
+{ id:"pargo-colmillon", name:"Pargo Colmillón", sci:"Lutjanus jordani (candidato fuerte)", family:"Lutjanidae", conf:"cand", confLabel:"Candidato fuerte — confirmar en La Cruz", nuevo:true,
+  aliases:["pargo colmillón","pargo colmillo"],
+  flesh:"Blanca", fleshHex:"#f8f3e8", texture:"Firme, pocas espinas", fat:"Baja",
+  preps:["zarandeado","frito","filete"], prepsLabel:"Como el pargo: zarandeado, entero al horno / asado / frito, filetes y postas fritas o empanizadas, al mojo de ajo o al ajillo; la cabeza, en caldos",
+  recognize:"Pargo gris-pardo, de ojo rojo y hocico puntiagudo, cuerpo robusto. La foto muestra exactamente eso. Es un pargo grande: preguntar qué talla llega a La Cruz.",
+  caution:"No confundir con el pargo prieto / cubera (Lutjanus novemfasciatus): en varias listas se mezclan, pero según SNIB / CONABIO, L. jordani es el pargo colmillón y L. novemfasciatus el pargo prieto. Por su tamaño el filete rinde bien, pero hay que pesar entero vs. filete en La Cruz. Rendimiento orientativo: 40–50% (rango general pargo / mero).",
+  season:"Temporada no verificada para L. jordani en Nayarit.",
+  photo:"assets/pargo-colmillon.jpg", photoAlt:"Pargo colmillón gris pardo de ojo rojo y hocico puntiagudo, sobre hielo en caja de madera", photoCap:"Foto del lote 2: “PARGO COLMILLÓN #pescadeldía”. Compatible con Lutjanus jordani — candidato fuerte." }
+];
+
+var PREP_LABEL = {ceviche:"Ceviche", frito:"Frito", zarandeado:"Zarandeado", filete:"Filete", sashimi:"Sashimi"};
+var grid = document.getElementById("grid");
+var emptyEl = document.getElementById("empty");
+var countEl = document.getElementById("count");
+var qEl = document.getElementById("q");
+var activeFilter = "all";
+
+function norm(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function byId(id){ for(var i=0;i<FISH.length;i++){ if(FISH[i].id===id) return FISH[i]; } return null; }
+function fishSVG(color){
+  return '<svg viewBox="0 0 120 60" fill="none" aria-hidden="true"><path d="M6 30 C26 10, 58 6, 84 22 L110 10 L104 30 L110 50 L84 38 C58 54, 26 50, 6 30 Z" fill="'+color+'" stroke="currentColor" stroke-width="2"/><circle cx="26" cy="26" r="3.5" fill="currentColor"/></svg>';
+}
+function badgeFor(f){
+  if(f.conf==="por") return '<span class="badge">Por confirmar</span>';
+  if(f.conf==="cand") return '<span class="badge">Candidato fuerte</span>';
+  if(f.conf==="alta") return '<span class="badge ok">Identificado</span>';
+  return '';
+}
+function render(){
+  var q = norm(qEl.value.trim());
+  var shown = 0;
+  grid.innerHTML = "";
+  FISH.forEach(function(f, idx){
+    var hay = norm(f.name+" "+f.sci+" "+f.family+" "+f.aliases.join(" "));
+    var matchQ = !q || hay.indexOf(q) !== -1;
+    var matchF = activeFilter==="all" || f.preps.indexOf(activeFilter) !== -1;
+    if(!matchQ || !matchF) return;
+    var card = document.createElement("button");
+    card.className = "card"; card.type = "button";
+    card.style.setProperty("--i", Math.min(shown, 14));
+    shown++;
+    card.setAttribute("aria-label","Ver ficha de "+f.name);
+    var newBadge = f.nuevo ? '<span class="badge new">Nuevo · Lote 2</span>' : '';
+    var imgHtml = f.photo
+      ? '<img src="'+f.photo+'" alt="'+f.photoAlt+'" loading="lazy">'
+      : '<div class="no-photo">'+fishSVG(f.fleshHex)+'<span>Sin foto de La Cruz todavía</span></div>';
+    var tags = f.preps.map(function(p){ return '<span class="tag">'+PREP_LABEL[p]+'</span>'; }).join("");
+    card.innerHTML =
+      '<span class="card-img">'+imgHtml+badgeFor(f)+newBadge+'<span class="card-num mono">N° '+(idx+1<10?'0':'')+(idx+1)+'</span></span>'+
+      '<span class="card-body"><h3>'+f.name+'</h3><span class="sci">'+f.sci+'</span>'+
+      '<span class="flesh"><span class="swatch" style="background:'+f.fleshHex+'"></span>Carne '+f.flesh.toLowerCase()+'</span>'+
+      '<span class="tags">'+tags+'</span><span class="open-hint">Ficha y fileteado →</span></span>';
+    card.addEventListener("click", function(){ openDetail(f); });
+    grid.appendChild(card);
+  });
+  countEl.textContent = shown === FISH.length ? "// "+shown+" fichas · catálogo v2 reforzado completo" : "// "+shown+" de "+FISH.length+" fichas";
+  emptyEl.classList.toggle("show", shown===0);
+}
+document.querySelectorAll(".fbtn").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.querySelectorAll(".fbtn").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+    b.setAttribute("aria-pressed","true");
+    activeFilter = b.getAttribute("data-filter");
+    render();
+  });
+});
+qEl.addEventListener("input", render);
+
+/* Detail */
+var overlay = document.getElementById("overlay");
+var sheetBody = document.getElementById("sheetBody");
+var lastFocus = null;
+var stepTimers = [];
+function filletDiagram(f){
+  var c = f.fleshHex;
+  return '<div class="diagram" id="diagram">'+
+  '<svg viewBox="0 0 640 300" role="img" aria-label="Animación: el cuchillo corta el pescado entero y los dos filetes limpios se separan de la espina central">'+
+    '<g class="whole"><path d="M40 150 C110 78, 300 62, 440 108 L560 58 L540 150 L560 242 L440 192 C300 238, 110 222, 40 150 Z" fill="#8fb5ad" stroke="var(--ink)" stroke-width="2.5"/><circle cx="105" cy="138" r="9" fill="var(--ink)"/><path d="M150 150 H470" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 7" opacity=".6"/></g>'+
+    '<g class="bones"><path d="M120 150 H500" stroke="var(--muted)" stroke-width="4"/><path d="M190 150 L175 118 M250 150 L238 116 M310 150 L300 118 M370 150 L362 120 M190 150 L175 182 M250 150 L238 184 M310 150 L300 182 M370 150 L362 180" stroke="var(--muted)" stroke-width="3"/><text x="320" y="168" text-anchor="middle" font-size="12.5" fill="var(--muted)">espina central · la cabeza va a caldos</text></g>'+
+    '<g class="fillet-top"><path d="M120 142 C200 92, 360 84, 470 122 C380 138, 220 146, 120 142 Z" fill="'+c+'" stroke="var(--ink)" stroke-width="2"/></g>'+
+    '<g class="fillet-bottom"><path d="M120 158 C220 154, 380 162, 470 178 C360 216, 200 208, 120 158 Z" fill="'+c+'" stroke="var(--ink)" stroke-width="2"/></g>'+
+    '<g class="knife"><path d="M96 84 L96 216" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M96 84 L84 66" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/></g>'+
+    '<text class="fillet-label" x="320" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">Filete 1 · carne '+f.flesh.toLowerCase()+'</text>'+
+    '<text class="fillet-label" x="320" y="284" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">Filete 2 · limpio, sin espinas</text>'+
+  '</svg>'+
+  '<p class="step-label" id="stepLabel">1 · Pescado entero, como llega de La Cruz</p>'+
+  '<button class="fillet-btn" id="filletBtn" type="button">Ver cómo se separa en filetes</button>'+
+  '<div class="fillet-legend"><span><i style="background:'+c+'"></i>Filetes (color real de la carne)</span><span><i style="background:#8fb5ad"></i>Pescado entero</span><span><i style="background:var(--muted)"></i>Espina central</span></div>'+
+  '<p style="font-size:.82rem;color:var(--muted);margin:9px 0 0">Rendimiento general de filete limpio: 35–55% del peso entero (pargo / mero 40–50%). Sin % verificado por especie.</p>'+
+  '</div>';
+}
+function openDetail(f){
+  lastFocus = document.activeElement;
+  stepTimers.forEach(function(t){ clearTimeout(t); }); stepTimers = [];
+  var photoHtml = f.photo ? '<img class="detail-photo" src="'+f.photo+'" alt="'+f.photoAlt+'"><p class="photo-cap">'+f.photoCap+'</p>'
+    : '<div class="detail-photo" style="display:flex;align-items:center;justify-content:center"><div class="no-photo" style="display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted)">'+fishSVG(f.fleshHex)+'<span>Sin foto de La Cruz todavía — tomarla en el próximo viaje</span></div></div>';
+  var badgeTxt = f.conf==="por" ? "⚠ Por confirmar — "+f.confLabel : f.confLabel;
+  var linkHtml = "";
+  if(f.link){
+    var target = byId(f.link.to);
+    if(target) linkHtml = '<div class="detail-block link-box"><h3>Ficha vinculada</h3><p>'+f.link.text+'</p><button class="link-btn" id="linkBtn" type="button">Ver ficha de '+target.name+' →</button></div>';
+  }
+  sheetBody.innerHTML =
+    '<h2 id="d-name">'+f.name+'</h2>'+
+    '<p class="sci" style="margin-top:3px;font-size:.85rem">'+f.sci+' · Familia '+f.family+'</p>'+
+    '<p style="margin:9px 0 0"><span class="tag" style="background:var(--warn-bg);color:var(--warn-ink)">'+badgeTxt+'</span>'+(f.nuevo?' <span class="tag" style="background:var(--cyan);color:#fff">Nuevo · Lote 2</span>':'')+'</p>'+
+    photoHtml+
+    '<dl class="kv">'+
+      '<div><dt>Color de la carne</dt><dd><span class="swatch" style="display:inline-block;vertical-align:-3px;margin-right:7px;background:'+f.fleshHex+'"></span>'+f.flesh+'</dd></div>'+
+      '<div><dt>Textura</dt><dd>'+f.texture+'</dd></div>'+
+      '<div><dt>Grasa</dt><dd>'+f.fat+'</dd></div>'+
+    '</dl>'+
+    '<div class="detail-block"><h3>Cómo reconocerlo en el mercado</h3><p>'+f.recognize+'</p></div>'+
+    '<div class="detail-block"><h3>Mejores preparaciones</h3><p>'+f.prepsLabel+'.</p><div class="tags" style="margin-top:8px">'+f.preps.map(function(p){return '<span class="tag">'+PREP_LABEL[p]+'</span>';}).join("")+'</div></div>'+
+    '<div class="detail-block"><h3>Cómo se filetea</h3><div class="fillet-box">'+filletDiagram(f)+'</div></div>'+
+    '<div class="detail-block caution"><h3>Precauciones</h3><p>'+f.caution+'</p></div>'+
+    linkHtml+
+    '<div class="detail-block"><h3>También se le conoce como</h3><p>'+f.aliases.join(" · ")+'</p></div>'+
+    '<div class="detail-block"><h3>Temporada / notas</h3><p>'+f.season+'</p></div>'+
+    '<div class="detail-block"><h3>Rendimiento</h3><p>Sin rendimiento verificado por especie. Usa el rango general: 35–55% de filete limpio (pargo / mero 40–50%) y mídelo en La Cruz pesando el pez entero contra el filete limpio.</p></div>';
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+  sheetBody.parentElement.scrollTop = 0;
+  var btn = document.getElementById("filletBtn");
+  var diagram = document.getElementById("diagram");
+  var label = document.getElementById("stepLabel");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var open = false;
+  function setStage(stage){
+    stepTimers.forEach(function(t){ clearTimeout(t); }); stepTimers = [];
+    if(stage===0){ label.textContent = "1 · Pescado entero, como llega de La Cruz"; return; }
+    if(reduced){ label.textContent = "2 · Los dos filetes limpios, separados de la espina central"; return; }
+    label.textContent = "2 · El cuchillo recorre el lomo, pegado a la espina…";
+    stepTimers.push(setTimeout(function(){ label.textContent = "3 · Los dos filetes limpios se separan de la espina central"; }, 1150));
+  }
+  btn.addEventListener("click", function(){
+    open = !open;
+    diagram.classList.toggle("open", open);
+    btn.textContent = open ? "Volver al pescado entero" : "Ver cómo se separa en filetes";
+    setStage(open ? 1 : 0);
+  });
+  var linkBtn = document.getElementById("linkBtn");
+  if(linkBtn && f.link){
+    linkBtn.addEventListener("click", function(){ var t = byId(f.link.to); if(t) openDetail(t); });
+  }
+  if(!reduced){
+    stepTimers.push(setTimeout(function(){ if(!open){ btn.click(); } }, 700));
+  }
+  document.getElementById("closeBtn").focus();
+}
+function closeDetail(){
+  stepTimers.forEach(function(t){ clearTimeout(t); }); stepTimers = [];
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+  if(lastFocus) lastFocus.focus();
+}
+document.getElementById("closeBtn").addEventListener("click", closeDetail);
+overlay.addEventListener("click", function(e){ if(e.target===overlay) closeDetail(); });
+document.addEventListener("keydown", function(e){ if(e.key==="Escape" && overlay.classList.contains("open")) closeDetail(); });
+
+render();
+
+/* Entrada en movimiento de las secciones al hacer scroll (formato estudio) */
+(function(){
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduced || !("IntersectionObserver" in window)) return;
+  var els = document.querySelectorAll(".notices, .section, .status-card");
+  els.forEach(function(el){ el.classList.add("reveal"); });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+  }, {threshold:.1});
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
